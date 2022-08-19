@@ -1,0 +1,55 @@
+#===============================================
+# Description: Update synchronization checker
+# Lisence: MIT
+# By：Jejz
+#===============================================
+
+name: Update synchronization checker
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    - cron: 16 1 * * * 
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  New-Update-Files:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        token: ${{ secrets.GH_TOKEN }}
+        
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo timedatectl set-timezone "$TZ"
+        pwd
+        git_clone https://github.com/xiaorouji/openwrt-passwall && mvdir openwrt-passwall
+        git_clone https://github.com/fw876/helloworld && mvdir helloworld
+
+
+    - name: Commit
+      run: |
+        git config --global user.email 349589369@qq.com
+        git config --global user.name Jejz
+        git add .
+        git commit -m"action:`date`"
+        git pull --rebase
+        
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GH_TOKEN }}
+                    
+    - name: Telegram notification upload success
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+           ҉ 🎡同步成功 ҉
