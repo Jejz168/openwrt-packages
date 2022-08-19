@@ -1,10 +1,8 @@
 #===============================================
-#
-# This is free software, lisence use MIT.
-# 
-# 
-# <https://github.com/kiddin9/openwrt-packages>
-#
+# Description: Update synchronization checker
+# Lisence: MIT
+# By：Jejz
+#===============================================
 
 name: Merge-upstream
 on:
@@ -29,6 +27,7 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         sudo timedatectl set-timezone "Asia/Shanghai"
+        
     - name: Syn upstream
       run: |
         shopt -s extglob
