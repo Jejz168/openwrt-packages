@@ -9,18 +9,9 @@
 name: Merge-upstream
 on:
   push:
-    paths:
-      - '.github/workflows/upstream.yml'
-      - '.gitignore'
-      - 'diy/**'
   schedule:
-    - cron: 0 */12 * * *
+    - cron: 0 */8 * * *
   workflow_dispatch:
-    inputs:
-      ssh:
-        description: 'ssh'
-        required: false
-        default: 'true'
   watch:
     types: started
   repository_dispatch:
@@ -82,6 +73,7 @@ jobs:
         git add .
         git commit -m "${Emoji[$[$RANDOM % ${#Emoji[@]}]]} Sync $(date +%Y-%m-%d" "%H:%M:%S)"
         git push -f
+        
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       continue-on-error: true
