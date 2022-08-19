@@ -70,9 +70,6 @@ jobs:
     - name: Delete duplicated packages
       run: |
         shopt -s extglob
-        mv -n luciapp/!(luci-app-noddos|luci-app-cshark|luci-app-dnscrypt-proxy|luci-app-https-dns-proxy) ./ ; rm -Rf luciapp
-        mv -n lean/* ./ ; rm -Rf lean
-        mv -n liep/* ./ ; rm -Rf liep
         mv -n openwrt-app-actions/applications/* ./;rm -rf openwrt-app-actions
         cp -rf diy/.packages/* ./ || true
         rm -Rf */.git
@@ -80,9 +77,7 @@ jobs:
       uses: kiddin9/debugger-action@master
       if: github.event.inputs.ssh == 'true'
 
-    - name: Apply patches
-      run: |
-        find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch" || (curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=❌ 软件包更新失败 😂 https://github.com/kiddin9/openwrt-packages/actions" "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage";exit 1)
+    
     - name: Modify
       run: |
         shopt -s extglob
