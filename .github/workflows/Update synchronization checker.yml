@@ -8,16 +8,14 @@
 
 name: Merge-upstream
 on:
-  push:
   schedule:
     - cron: 0 */8 * * *
   workflow_dispatch:
-  watch:
   repository_dispatch:
 
 jobs:
   merge:
-    if: github.event.repository.owner.id == github.event.sender.id
+    #if: github.event.repository.owner.id == github.event.sender.id
     runs-on: Ubuntu-20.04
 
     steps:
