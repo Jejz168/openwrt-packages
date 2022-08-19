@@ -7,7 +7,7 @@
 name: Merge-upstream
 on:
   schedule:
-    - cron: 0 */8 * * *
+    - cron: 8 6,18 * * *
   workflow_dispatch:
   repository_dispatch:
 
