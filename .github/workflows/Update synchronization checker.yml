@@ -55,9 +55,9 @@ jobs:
         git_clone https://github.com/fw876/helloworld && mvdir helloworld
         )
         cd openwrt-passwall-packages
-        rm -rf ./hysteria
+        rm -rf hysteria
         cd helloworld
-        rm -rf ./luci-app-ssr-plus
+        rm -rf luci-app-ssr-plus
 
     - name: Apply
       run: |
