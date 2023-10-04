@@ -54,7 +54,7 @@ jobs:
         git_clone https://github.com/xiaorouji/openwrt-passwall-packages && mvdir openwrt-passwall-packages
         cd openwrt-passwall-packages
         rm -rf hysteria
-        git_clone  && mvdir helloworld
+        git_clone https://github.com/fw876/helloworld && mvdir helloworld
         cd helloworld
         rm -rf luci-app-ssr-plus
         ) 
