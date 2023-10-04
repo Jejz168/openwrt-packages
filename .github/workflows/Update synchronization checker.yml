@@ -30,10 +30,10 @@ jobs:
         
     - name: Syn upstream
       run: |
-        rm -rf ./
-        git_clone https://github.com/xiaorouji/openwrt-passwall-packages ./
+        rm -rf ./*
+        git clone https://github.com/xiaorouji/openwrt-passwall-packages ./
         rm -rf ./hysteria
-        git_clone https://github.com/fw876/helloworld ./
+        git clone https://github.com/fw876/helloworld ./
         rm -rf ./luci-app-ssr-plus
 
     - name: Apply
