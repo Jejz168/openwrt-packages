@@ -47,14 +47,14 @@ jobs:
           rm -rf $localdir
           )
         function mvdir() {
+        rm -rf $1/openwrt-passwall-packages/hysteria
+        rm -rf $1/helloworld/luci-app-ssr-plus
         mv -n `find $1/* -maxdepth 0 -type d` ./
         rm -rf $1
         }
         (
         git_clone https://github.com/xiaorouji/openwrt-passwall-packages && mvdir openwrt-passwall-packages
         git_clone https://github.com/fw876/helloworld && mvdir helloworld
-        rm -rf openwrt-passwall-packages/hysteria
-        cd openwrt-passwall-packages
         )
 
     - name: Apply
