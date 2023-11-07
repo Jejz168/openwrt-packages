@@ -36,9 +36,6 @@ jobs:
         function git_clone() (
           git clone --depth 1 $1 $2 || true
         )
-        function git_sparse_clone() (
-          git clone -b main --depth 1 $1 $2 || true
-        )
         function mvdir() {
         mv -n `find $1/* -maxdepth 0 -type d` ./
         rm -rf $1
