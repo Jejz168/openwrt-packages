@@ -53,6 +53,8 @@ jobs:
         (
         git_clone https://github.com/xiaorouji/openwrt-passwall-packages && rm -rf openwrt-passwall-packages/hysteria && mvdir openwrt-passwall-packages
         git_clone https://github.com/fw876/helloworld && mvdir helloworld
+        svn co https://github.com/xiangfeidexiaohuo/extra-ipk/trunk/patch
+/wall && mvdir wall
         )
 
     - name: Apply
