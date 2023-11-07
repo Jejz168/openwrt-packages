@@ -31,7 +31,7 @@ jobs:
     - name: Update
       run: |
         rm -rf ./*
-        git clone https://github.com/xiaorouji/openwrt-passwall-packages ./*
+        git clone https://github.com/xiaorouji/openwrt-passwall-packages ./
         rm -rf ./patch/wall/.github
         svn export https://github.com/fw876/helloworld/branches/main/redsocks2 ./redsocks2
         svn export https://github.com/fw876/helloworld/branches/main/lua-neturl ./lua-neturl
