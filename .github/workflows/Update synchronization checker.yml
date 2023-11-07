@@ -52,7 +52,7 @@ jobs:
         }
         (
         git_clone https://github.com/xiaorouji/openwrt-passwall-packages && mvdir openwrt-passwall-packages
-        # git_clone https://github.com/fw876/helloworld && mvdir helloworld
+        git_clone -b main https://github.com/fw876/helloworld && mvdir helloworld
         )
 
     - name: Apply
