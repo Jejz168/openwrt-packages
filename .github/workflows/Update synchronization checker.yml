@@ -28,19 +28,39 @@ jobs:
         git config --global user.name "github-actions[bot]"
         sudo timedatectl set-timezone "Asia/Shanghai"
         
-    - name: Update
+    - name: Syn upstream
       run: |
-        rm -rf ./*
-        git clone https://github.com/xiaorouji/openwrt-passwall-packages ./
-        rm -rf ./patch/wall/.github
-        svn export https://github.com/fw876/helloworld/branches/main/redsocks2 ./redsocks2
-        svn export https://github.com/fw876/helloworld/branches/main/lua-neturl ./lua-neturl
-        svn export https://github.com/fw876/helloworld/branches/main/shadow-tls ./shadow-tls
-        svn export https://github.com/fw876/helloworld/branches/main/luci-app-ssr-plus ./luci-app-ssr-plus
+        shopt -s extglob
+        git rm -r --cache * >/dev/null 2>&1 &
+        rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"` >/dev/null 2>&1
+        function git_clone() (
+          git clone --depth 1 $1 $2 || true
+        )
+        function git_sparse_clone() (
+          branch="$1" rurl="$2" localdir="$3" && shift 3
+          git clone -b $branch --depth 1 --filter=blob:none --sparse $rurl $localdir
+          cd $localdir
+          git sparse-checkout init --cone
+          git sparse-checkout set $@
+          mv -n $@ ../
+          cd ..
+          rm -rf $localdir
+          )
+        function mvdir() {
+        mv -n `find $1/* -maxdepth 0 -type d` ./
+        rm -rf $1
+        }
+        (
+        git_clone https://github.com/xiaorouji/openwrt-passwall-packages && mvdir openwrt-passwall-packages
+        git_sparse_clone -b main https://github.com/fw876/helloworld && mvdir helloworld
+        )
 
     - name: Apply
       run: |
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
+        git add .
+        git commit -m "${Emoji[$[$RANDOM % ${#Emoji[@]}]]} Sync $(date +%Y-%m-%d" "%H:%M:%S)"
+        git reset --soft HEAD^
         git add .
         git commit -m "${Emoji[$[$RANDOM % ${#Emoji[@]}]]} Sync $(date +%Y-%m-%d" "%H:%M:%S)"
         git push -f
