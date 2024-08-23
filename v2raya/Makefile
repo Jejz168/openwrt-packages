@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=v2rayA
-PKG_VERSION:=1.5.9.1698.1
-PKG_RELEASE:=2
+PKG_VERSION:=2.2.5.7
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/v2rayA/v2rayA/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=247a357230c616bf48309c61d119686e4ad56939c05afef584c45051e9dc6220
+PKG_HASH:=fae10dafa54508bf19961b111d608dda9bb7a79e724c88e60a464c58369f4826
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/service
 
 PKG_LICENSE:=AGPL-3.0-only
@@ -23,7 +23,9 @@ PKG_USE_MIPS16:=0
 PKG_BUILD_FLAGS:=no-mips16
 
 GO_PKG:=github.com/v2rayA/v2rayA
-GO_PKG_LDFLAGS_X:=$(GO_PKG)/conf.Version=$(PKG_VERSION)
+GO_PKG_LDFLAGS_X:= \
+	$(GO_PKG)/conf.Version=$(PKG_VERSION) \
+	$(GO_PKG)/core/iptables.TproxyNotSkipBr=true
 
 include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
@@ -38,11 +40,7 @@ define Package/v2raya
   SUBMENU:=Web Servers/Proxies
   DEPENDS:=$(GO_ARCH_DEPENDS) \
     +ca-bundle \
-    +iptables-mod-conntrack-extra \
-    +iptables-mod-extra \
-    +iptables-mod-filter \
-    +iptables-mod-tproxy \
-    +kmod-ipt-nat6 \
+    +kmod-nft-tproxy \
     +xray-core
   URL:=https://v2raya.org
 endef
@@ -59,10 +57,10 @@ endef
 
 WEB_FILE:=$(PKG_NAME)-web-$(PKG_VERSION).tar.gz
 define Download/v2raya-web
-	URL:=https://codeload.github.com/v2rayA/v2raya-web/tar.gz/v$(PKG_VERSION)?
-	URL_FILE:=$(WEB_FILE)
+	URL:=https://github.com/v2rayA/v2rayA/releases/download/v$(PKG_VERSION)/
+	URL_FILE:=web.tar.gz
 	FILE:=$(WEB_FILE)
-	HASH:=149097a42c3e5fa6f5c3cd46d1bf7ec4546e79ad37c1446b759539e700bd75e2
+	HASH:=a5b6151549a318b1bd5a4cc01482ad0abc1a7bd99fa01037a2a6b84501a77c3e
 endef
 
 define Build/Prepare
