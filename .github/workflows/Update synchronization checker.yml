@@ -41,7 +41,7 @@ jobs:
         rm -rf $1
         }
         (
-        git_clone https://github.com/xiaorouji/openwrt-passwall-packages && mvdir openwrt-passwall-packages
+        git_clone https://github.com/xiaorouji/openwrt-passwall-packages && rm -rf openwrt-passwall-packages/{shadowsocksr-libev} && mvdir openwrt-passwall-packages
         git clone https://github.com/fw876/helloworld -b master --depth 1 && rm -rf helloworld/{naiveproxy,chinadns-ng} && mvdir helloworld
         )
 
