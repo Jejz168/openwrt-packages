@@ -32,16 +32,16 @@ local user_agent = ucic:get_first(name, 'server_subscribe', 'user_agent', 'v2ray
 -- 读取 ss_type 设置
 local ss_type = ucic:get_first(name, 'server_subscribe', 'ss_type', 'ss-rust')
 -- 根据 ss_type 选择对应的程序
-local ss_program = ""
+local ss_program = "sslocal"
 if ss_type == "ss-rust" then
     ss_program = "sslocal"  -- Rust 版本使用 sslocal
 elseif ss_type == "ss-libev" then
     ss_program = "ss-redir"  -- Libev 版本使用 ss-redir
 end
-local v2_ss = luci.sys.exec('type -t -p ' .. ss_program .. ' 2>/dev/null') ~= "" and "ss" or "v2ray"
-local has_ss_type = luci.sys.exec('type -t -p ' .. ss_program .. ' 2>/dev/null') ~= "" and ss_type
-local v2_tj = luci.sys.exec('type -t -p trojan') ~= "" and "trojan" or "v2ray"
-local hy2_type = luci.sys.exec('type -t -p hysteria') ~= "" and "hysteria2"
+local v2_ss = (luci.sys.exec('type -t -p ' .. ss_program .. ' 2>/dev/null') ~= "" and "ss" or "v2ray") or "unkown"
+local has_ss_type = (luci.sys.exec('type -t -p ' .. ss_program .. ' 2>/dev/null') ~= "" and ss_type) or "unkown"
+local v2_tj = (luci.sys.exec('type -t -p trojan') ~= "" and "trojan" or "v2ray") or "unkown"
+local hy2_type = (luci.sys.exec('type -t -p hysteria') ~= "" and "hysteria2") or "unkown"
 local log = function(...)
 	print(os.date("%Y-%m-%d %H:%M:%S ") .. table.concat({...}, " "))
 end
