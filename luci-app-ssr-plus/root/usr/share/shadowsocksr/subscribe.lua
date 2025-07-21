@@ -38,10 +38,10 @@ if ss_type == "ss-rust" then
 elseif ss_type == "ss-libev" then
     ss_program = "ss-redir"  -- Libev 版本使用 ss-redir
 end
-local v2_ss = (luci.sys.exec('type -t -p ' .. ss_program .. ' 2>/dev/null') ~= "" and "ss" or "v2ray") or "unkown"
-local has_ss_type = (luci.sys.exec('type -t -p ' .. ss_program .. ' 2>/dev/null') ~= "" and ss_type) or "unkown"
-local v2_tj = (luci.sys.exec('type -t -p trojan') ~= "" and "trojan" or "v2ray") or "unkown"
-local hy2_type = (luci.sys.exec('type -t -p hysteria') ~= "" and "hysteria2") or "unkown"
+local v2_ss = luci.sys.exec('type -t -p ' .. ss_program .. ' 2>/dev/null') ~= "" and "ss" or "v2ray"
+local has_ss_type = luci.sys.exec('type -t -p ' .. ss_program .. ' 2>/dev/null') ~= "" and ss_type
+local v2_tj = luci.sys.exec('type -t -p trojan') ~= "" and "trojan" or "v2ray"
+local hy2_type = luci.sys.exec('type -t -p hysteria') ~= "" and "hysteria2"
 local log = function(...)
 	print(os.date("%Y-%m-%d %H:%M:%S ") .. table.concat({...}, " "))
 end
@@ -192,6 +192,11 @@ local function processData(szType, content)
 		-- for k,v in pairs(params) do
 		--	log(k.."="..v)
 		-- end
+
+		-- 如果 hy2 程序未安装则跳过订阅	
+		if not hy2_type then
+		 return nil
+		end
 
 		result.alias = url.fragment and UrlDecode(url.fragment) or nil
 		result.type = hy2_type
@@ -430,6 +435,11 @@ local function processData(szType, content)
 			log("SS 节点服务器信息格式错误:", host_port)
 			return nil
 		end
+		
+		-- 如果 SS 程序未安装则跳过订阅	
+		if not (v2_ss or has_ss_type) then
+		 return nil
+		end
 
 		-- 填充 result
 		result.alias = alias
@@ -608,6 +618,11 @@ local function processData(szType, content)
 			end
 		else
 			result.server_port = port
+		end
+		
+		-- 如果 Tojan 程序未安装则跳过订阅	
+		if not v2_tj then
+		 return nil
 		end
 
 		if v2_tj ~= "trojan" then
